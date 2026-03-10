@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# WishMaker.io
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Blockchain-backed digital greeting card platform with Make-A-Wish Foundation integration.
+$10 per wish — 50% donated to Make-A-Wish.
 
-## Available Scripts
+## Quick start
 
-In the project directory, you can run:
+```bash
+npm install
+npm run dev
+```
 
-### `npm start`
+## File structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+wishmaker/
+├── index.html                         Vite HTML entry
+├── vite.config.js
+├── package.json
+└── src/
+    ├── main.jsx                       React DOM bootstrap
+    ├── App.jsx                        Router + global state (page, wish)
+    │
+    ├── utils/
+    │   └── tokens.js                  Design tokens (colours, fonts, flow steps)
+    │
+    ├── components/
+    │   ├── GlobalStyles.jsx           @keyframes + pseudo-class rules + media queries
+    │   ├── Navbar.jsx                 Sticky nav — logo, progress dots, page links
+    │   ├── StarArt.jsx                Shooting-star SVG (card cover art)
+    │   ├── WishCard.jsx               Folded greeting card (sm / md / lg)
+    │   ├── HowItWorksIcons.jsx        PenSVG, ChainSVG, EnvSVG
+    │   ├── GoldButton.jsx             Primary CTA — gold gradient button
+    │   ├── OutlineButton.jsx          Secondary action — border button
+    │   ├── Field.jsx                  Text input or textarea with optional label
+    │   ├── Divider.jsx                Horizontal gold rule with centred ✦
+    │   ├── TrustBar.jsx               SSL / Norton / payment badge strip
+    │   ├── PageHeader.jsx             Centred heading + optional subtitle
+    │   ├── ItalicTag.jsx              Centred serif italic tagline
+    │   └── ConfCard.jsx               White panel card used on Confirmation page
+    │
+    └── pages/
+        ├── HomePage.jsx               Hero, feature strip, tagline
+        ├── MakeWishPage.jsx           Step 1 — write message, live card preview
+        ├── CompleteWishPage.jsx       Step 2 — delivery options (digital + physical)
+        ├── CheckoutPage.jsx           Step 3 — payment form + order summary
+        ├── ConfirmationPage.jsx       Step 4 — wish ID, share, counter, testimonials
+        ├── HowItWorksPage.jsx         3-step explainer with circular icon badges
+        └── ImpactPage.jsx             Make-A-Wish story, 50% stat, ripple effect
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Navigation flow
 
-### `npm test`
+```
+Home
+ └─ Make a Wish (step 1)
+     └─ Complete Your Wish (step 2)
+         └─ Secure Checkout (step 3)
+             └─ Confirmation (step 4)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+How It Works  ← always in nav
+Impact        ← always in nav
+```
 
-### `npm run build`
+## Architecture
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+All styling is **inline React `style={}` objects** — no CSS files, no Tailwind, no build-time processing. This ensures styles render identically in any environment including sandboxes.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`GlobalStyles.jsx` is the single exception — it injects one `<style>` block for:
+- `@keyframes` (float, fadeup, pulse, shimmer)
+- Hover / focus pseudo-class rules (`:hover`, `:focus`, `::after`)
+- Responsive media query overrides for grid layouts
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Key tokens (`src/utils/tokens.js`)
 
-### `npm run eject`
+| Token | Value |
+|---|---|
+| `GOLD` | `#B8960C` |
+| `GOLD_GRAD` | `linear-gradient(135deg, #C9A227, #9A7400)` |
+| `BG` | `#FAF8F5` |
+| `SERIF` | Georgia, Times New Roman, serif |
+| `SANS` | system sans-serif stack |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## WishCard sizes
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Size | Dimensions |
+|---|---|
+| `lg` | 238 × 308 px |
+| `md` | 198 × 258 px |
+| `sm` | 152 × 198 px |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Pending (backend integration)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Base (Coinbase L2, Chain ID 8453) on-chain writes
+- Stripe payment processing
+- Email delivery for digital cards
+- Physical card printing + mailing
+- Real BaseScan transaction links
+# wish-maker
