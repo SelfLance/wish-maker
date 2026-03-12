@@ -1,14 +1,23 @@
 // ─────────────────────────────────────────────────────────
 // Navbar.jsx
 // Sticky top navigation bar.
-// Shows purchase-flow progress dots on steps 1–4.
+// Shows all 4 nav links (Home | How It Works | Impact | Wishing Well)
+// in gold bold, separated by pipe characters.
+// Shows purchase-flow progress dots on checkout steps.
 //
 // Props:
 //   page (string) – current page key
 //   go   (fn)     – navigate: go("home")
 // ─────────────────────────────────────────────────────────
 
-import { GOLD, GOLD_PALE, TEXT, TEXT2, BORDER, SERIF, SANS, FLOW_STEP } from "../utils/tokens";
+import { GOLD, GOLD_PALE, TEXT, BORDER, SERIF, SANS, FLOW_STEP } from "../utils/tokens";
+
+const NAV_LINKS = [
+  ["home",         "Home"],
+  ["how",          "How It Works"],
+  ["impact",       "Impact"],
+  ["wishing-well", "Wishing Well"],
+];
 
 export default function Navbar({ page, go }) {
   const step = FLOW_STEP[page] ?? null;
@@ -51,14 +60,27 @@ export default function Navbar({ page, go }) {
         </div>
       )}
 
-      {/* Nav links */}
-      <ul style={{ display:"flex", gap:32, listStyle:"none", margin:0, padding:0 }}>
-        {[["how","How it works"],["impact","Impact"]].map(([p, label]) => (
-          <li key={p}>
+      {/* Nav links — bold gold with pipe separators */}
+      <ul style={{ display:"flex", alignItems:"center", gap:0, listStyle:"none", margin:0, padding:0 }}>
+        {NAV_LINKS.map(([p, label], idx) => (
+          <li key={p} style={{ display:"flex", alignItems:"center" }}>
+            {idx > 0 && (
+              <span style={{ color: BORDER, fontSize:16, margin:"0 14px", userSelect:"none", fontWeight:300 }}>|</span>
+            )}
             <span
               className={`wm-nav-link${page === p ? " active" : ""}`}
               onClick={() => go(p)}
-              style={{ fontFamily:SANS, fontSize:13.5, color:TEXT2, cursor:"pointer", paddingBottom:3, transition:"color 0.2s" }}
+              style={{
+                fontFamily: SANS,
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: page === p ? "#C9A227" : GOLD,
+                opacity: page === p ? 1 : 0.78,
+                cursor: "pointer",
+                paddingBottom: 2,
+                transition: "opacity 0.2s",
+                whiteSpace: "nowrap",
+              }}
             >
               {label}
             </span>

@@ -96,4 +96,3 @@ All styling is **inline React `style={}` objects** — no CSS files, no Tailwind
 - Email delivery for digital cards
 - Physical card printing + mailing
 - Real BaseScan transaction links
-# wish-maker

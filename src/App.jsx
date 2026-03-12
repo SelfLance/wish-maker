@@ -20,6 +20,7 @@ import CheckoutPage     from "./pages/CheckoutPage";
 import ConfirmationPage from "./pages/ConfirmationPage";
 import HowItWorksPage   from "./pages/HowItWorksPage";
 import ImpactPage       from "./pages/ImpactPage";
+import WishingWellPage  from "./pages/WishingWellPage";
 
 import { BG, TEXT, SANS } from "./utils/tokens";
 
@@ -33,20 +34,20 @@ export default function App() {
   }
 
   const screens = {
-    home:         <HomePage          go={go} />,
-    make:         <MakeWishPage      go={go} setWish={setWish} />,
-    complete:     <CompleteWishPage  go={go} wish={wish} />,
-    checkout:     <CheckoutPage      go={go} wish={wish} />,
-    confirmation: <ConfirmationPage  go={go} wish={wish} />,
-    how:          <HowItWorksPage />,
-    impact:       <ImpactPage        go={go} />,
+    home:          <HomePage          go={go} />,
+    make:          <MakeWishPage      go={go} setWish={setWish} />,
+    complete:      <CompleteWishPage  go={go} wish={wish} />,
+    checkout:      <CheckoutPage      go={go} wish={wish} />,
+    confirmation:  <ConfirmationPage  go={go} wish={wish} />,
+    how:           <HowItWorksPage />,
+    impact:        <ImpactPage        go={go} />,
+    "wishing-well":<WishingWellPage />,
   };
 
   return (
     <div style={{ fontFamily: SANS, background: BG, color: TEXT, minHeight: "100vh" }}>
       <GlobalStyles />
       <Navbar page={page} go={go} />
-      {/* key forces fresh mount so entry animations replay on every navigation */}
       <main key={page}>
         {screens[page] ?? screens.home}
       </main>

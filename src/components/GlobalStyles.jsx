@@ -5,7 +5,7 @@
 // uses inline style={} objects.
 // ─────────────────────────────────────────────────────────
 
-import { GOLD, GOLD_GLOW, TEXT } from "../utils/tokens";
+import { GOLD, GOLD_GLOW } from "../utils/tokens";
 
 const css = `
   /* ── Resets ── */
@@ -35,7 +35,7 @@ const css = `
     width: 0; height: 1px; background: ${GOLD}; transition: width 0.2s ease;
   }
   .wm-nav-link:hover::after, .wm-nav-link.active::after { width: 100%; }
-  .wm-nav-link:hover { color: ${TEXT} !important; }
+  .wm-nav-link:hover { color: ${GOLD} !important; opacity: 0.75; }
 
   /* ── Input focus ring ── */
   .wm-input:focus {
@@ -73,6 +73,7 @@ const css = `
     .wm-hero-vis { order: -1; }
     .wm-page     { padding: 48px 20px 40px !important; }
     .wm-nav      { padding: 0 18px !important; }
+    .wm-atf      { height: auto !important; overflow: visible !important; }
   }
   @media (max-width: 560px) {
     .wm-hero-h1   { font-size: 42px !important; }
