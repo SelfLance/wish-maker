@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "homepage": "https://selflance.github.io/wish-maker/",
+  "homepage": "https://nasiralishigri.github.io/wish-maker/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
