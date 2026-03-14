@@ -1,335 +1,342 @@
-// ─────────────────────────────────────────────────────────
-// WishingWellPage.jsx
-// The Wishing Well — a free, donation-based page.
-// Send a wish into the well and help grant one for a child.
-// 100% donated to Make-A-Wish.
-//
-// Layout matches mockup:
-//   • Soft lavender-cream radial background
-//   • Centred title + subtitle + divider sparkle
-//   • Two-column: well illustration left, interaction right
-//   • Wish-type tags + optional textarea + donation amounts
-//   • "Cast Wish Into the Well" gold CTA
-//   • Wishes counter footer
-// ─────────────────────────────────────────────────────────
+// WishingWellPage — matches mockup Image 8 exactly
+// Single viewport: lavender linen bg, sparkle cluster, title, 2-col
+// Left: wishing well SVG | Right: tags + textarea + amounts + CTA
+// Footer: sparkle + counter
 
 import { useState } from "react";
-import GoldButton   from "../components/GoldButton";
-import { GOLD, GOLD_GRAD, GOLD_GLOW, GOLD_PALE, BG_WHITE, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
+import { GOLD, SERIF, SANS } from "../utils/tokens";
 
-// ── Wishing Well SVG illustration ───────────────────────
-function WishingWellIllustration() {
+const PAGE_BG = `
+  repeating-linear-gradient(0deg,rgba(170,150,200,0.042) 0px,rgba(170,150,200,0.042) 1px,transparent 1px,transparent 20px),
+  linear-gradient(150deg,#EAE4F4 0%,#F2EDF8 35%,#F7F2F8 65%,#F9F4EE 100%)
+`;
+const GOLD_LINE = "rgba(184,150,12,0.22)";
+
+// ── Well SVG ─────────────────────────────────────────────
+function WishingWell() {
   return (
-    <svg viewBox="0 0 320 360" fill="none" style={{ width:"100%", maxWidth:320 }} aria-hidden="true">
-      {/* Glow behind well */}
-      <ellipse cx="160" cy="220" rx="120" ry="90" fill="rgba(212,175,55,0.18)"/>
-      <ellipse cx="160" cy="240" rx="80" ry="50" fill="rgba(212,175,55,0.22)"/>
+    <svg viewBox="0 0 340 380" fill="none" style={{ width:"100%", maxWidth:300 }}>
+      <defs>
+        <radialGradient id="wg1" cx="50%" cy="55%" r="55%">
+          <stop offset="0%" stopColor="#FFE566" stopOpacity="0.55"/>
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0"/>
+        </radialGradient>
+        <radialGradient id="wg2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFF5B0" stopOpacity="0.42"/>
+          <stop offset="100%" stopColor="#F0C040" stopOpacity="0"/>
+        </radialGradient>
+        <radialGradient id="wrim" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFEE88" stopOpacity="0.92"/>
+          <stop offset="60%" stopColor="#F5C842" stopOpacity="0.58"/>
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0"/>
+        </radialGradient>
+        <linearGradient id="wstone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#D8B450"/>
+          <stop offset="100%" stopColor="#A88020"/>
+        </linearGradient>
+        <linearGradient id="wpost" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#C09828"/>
+          <stop offset="50%" stopColor="#E8C86A"/>
+          <stop offset="100%" stopColor="#A87820"/>
+        </linearGradient>
+        <linearGradient id="wroof" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#E8C86A"/>
+          <stop offset="100%" stopColor="#B8920A"/>
+        </linearGradient>
+        <linearGradient id="wbuck" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#D4AF4A"/>
+          <stop offset="100%" stopColor="#9A7418"/>
+        </linearGradient>
+      </defs>
 
-      {/* Well base — stone cylinder */}
-      <ellipse cx="160" cy="230" rx="78" ry="22" fill="#C8A84B" opacity="0.55"/>
-      <rect x="82" y="185" width="156" height="48" rx="4" fill="#D4A94A"/>
-      <rect x="82" y="185" width="156" height="48" rx="4" fill="url(#stone)" opacity="0.85"/>
-      <ellipse cx="160" cy="185" rx="78" ry="22" fill="#E8C56A"/>
-
-      {/* Stone texture lines */}
-      {[0,1,2,3].map(row => (
-        [0,1,2,3,4].map(col => (
-          <rect key={`${row}${col}`}
-            x={86 + col * 30 + (row % 2) * 15} y={190 + row * 11}
-            width="27" height="9" rx="2"
-            fill="rgba(0,0,0,0.08)"
-          />
-        ))
-      ))}
-
-      {/* Well rim */}
-      <ellipse cx="160" cy="185" rx="78" ry="22" fill="none" stroke="#C9A227" strokeWidth="2" opacity="0.6"/>
-
-      {/* Well posts */}
-      <rect x="108" y="100" width="14" height="90" rx="3" fill="#C8A84B"/>
-      <rect x="198" y="100" width="14" height="90" rx="3" fill="#C8A84B"/>
-
-      {/* Roof */}
-      <polygon points="90,110 160,60 230,110" fill="#D4A94A"/>
-      <polygon points="90,110 160,60 230,110" fill="none" stroke="#B8860B" strokeWidth="1.5"/>
-      {/* Roof planks */}
-      {[0,1,2,3,4,5,6].map(i => (
-        <line key={i} x1={90 + i*20} y1={110} x2={125 + i*10} y2={65}
-          stroke="rgba(0,0,0,0.1)" strokeWidth="1.5"/>
-      ))}
-      {/* Roof ridge cap */}
-      <rect x="148" y="56" width="24" height="8" rx="2" fill="#B8860B" opacity="0.7"/>
-
-      {/* Bucket rope */}
-      <line x1="155" y1="120" x2="148" y2="182" stroke="#8B6914" strokeWidth="2.5" strokeLinecap="round" opacity="0.8"/>
-
-      {/* Bucket */}
-      <rect x="132" y="152" width="32" height="28" rx="3" fill="#D4A94A"/>
-      <ellipse cx="148" cy="152" rx="16" ry="5" fill="#E8C56A"/>
-      <ellipse cx="148" cy="180" rx="16" ry="5" fill="#C8A84B"/>
-
-      {/* Crank handle */}
-      <circle cx="210" cy="148" r="6" fill="#B8860B"/>
-      <line x1="210" y1="120" x2="210" y2="148" stroke="#B8860B" strokeWidth="3.5" strokeLinecap="round"/>
-      <line x1="198" y1="120" x2="210" y2="120" stroke="#B8860B" strokeWidth="3.5" strokeLinecap="round"/>
+      {/* Glow halos */}
+      <ellipse cx="170" cy="238" rx="140" ry="105" fill="url(#wg1)"/>
+      <ellipse cx="170" cy="228" rx="100" ry="74"  fill="url(#wg2)"/>
 
       {/* Sparkles */}
-      {[
-        [60,  160, 0.9, 14], [280, 155, 0.8, 11],
-        [95,  130, 0.7, 9],  [245, 175, 0.6, 8],
-        [70,  200, 0.5, 7],  [265, 210, 0.5, 6],
-        [130, 100, 0.6, 8],  [195, 95,  0.5, 7],
-      ].map(([x, y, op, s], i) => (
+      {[[42,168,10,0.70],[296,162,8,0.62],[60,132,6,0.50],[278,198,7,0.55],
+        [36,208,5,0.40],[306,142,5,0.44],[126,98,6,0.44],[220,94,5,0.38]].map(([x,y,s,op],i)=>(
         <g key={i} transform={`translate(${x},${y})`} opacity={op}>
-          <line x1="0" y1={-s} x2="0" y2={s}    stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1={-s} y1="0" x2={s} y2="0"    stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1={-s*.6} y1={-s*.6} x2={s*.6} y2={s*.6} stroke="#D4AF37" strokeWidth="1" strokeLinecap="round" opacity="0.6"/>
-          <line x1={s*.6}  y1={-s*.6} x2={-s*.6} y2={s*.6} stroke="#D4AF37" strokeWidth="1" strokeLinecap="round" opacity="0.6"/>
+          <line x1="0" y1={-s} x2="0" y2={s} stroke="#D4AF37" strokeWidth="1.6" strokeLinecap="round"/>
+          <line x1={-s} y1="0" x2={s} y2="0" stroke="#D4AF37" strokeWidth="1.6" strokeLinecap="round"/>
+          <line x1={-s*.58} y1={-s*.58} x2={s*.58} y2={s*.58} stroke="#D4AF37" strokeWidth="1" strokeLinecap="round" opacity="0.52"/>
+          <line x1={s*.58} y1={-s*.58} x2={-s*.58} y2={s*.58} stroke="#D4AF37" strokeWidth="1" strokeLinecap="round" opacity="0.52"/>
         </g>
       ))}
 
-      {/* Bottom glow pool */}
-      <ellipse cx="160" cy="285" rx="70" ry="18" fill="rgba(212,175,55,0.15)"/>
+      {/* Well body */}
+      <rect x="88" y="203" width="164" height="88" rx="3" fill="#A88020"/>
+      <rect x="88" y="203" width="164" height="88" rx="3" fill="url(#wstone)"/>
+      {[0,1,2,3,4].map(row=>[0,1,2,3,4].map(col=>{
+        const x0=91+col*28+(row%2)*14, y0=207+row*17;
+        if(x0+24>250) return null;
+        return <rect key={`${row}-${col}`} x={x0} y={y0} width="24" height="13" rx="2" fill="rgba(255,255,255,0.08)" stroke="rgba(0,0,0,0.09)" strokeWidth="0.5"/>;
+      }))}
 
-      <defs>
-        <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="white" stopOpacity="0.15"/>
-          <stop offset="100%" stopColor="black" stopOpacity="0.1"/>
-        </linearGradient>
-      </defs>
+      {/* Inner glow at rim */}
+      <ellipse cx="170" cy="203" rx="82" ry="23" fill="url(#wrim)"/>
+      <ellipse cx="170" cy="201" rx="82" ry="23" fill="#D4B050"/>
+      <ellipse cx="170" cy="199" rx="82" ry="23" fill="#E8C86A"/>
+      <ellipse cx="170" cy="199" rx="82" ry="23" fill="none" stroke="#C9A227" strokeWidth="1.4" opacity="0.65"/>
+      <ellipse cx="170" cy="291" rx="82" ry="16" fill="#C8A030"/>
+
+      {/* Posts */}
+      <rect x="116" y="108" width="15" height="97" rx="4" fill="url(#wpost)"/>
+      <rect x="209" y="108" width="15" height="97" rx="4" fill="url(#wpost)"/>
+
+      {/* Roof */}
+      <polygon points="98,116 170,61 242,116" fill="#A07818" opacity="0.55"/>
+      <polygon points="96,114 170,58 244,114" fill="url(#wroof)"/>
+      {[0,1,2,3,4,5,6,7].map(i=>{
+        const x1=96+i*18.5, x2=133+i*9.25;
+        return <line key={i} x1={x1} y1="114" x2={x2} y2="62" stroke="rgba(0,0,0,0.09)" strokeWidth="1.2"/>;
+      })}
+      <rect x="160" y="54" width="20" height="9" rx="2" fill="#9A7010"/>
+      <rect x="161" y="55" width="18" height="7" rx="2" fill="#C8A030" opacity="0.7"/>
+
+      {/* Axle */}
+      <rect x="114" y="141" width="112" height="6" rx="3" fill="#E0BC50"/>
+
+      {/* Crank */}
+      <line x1="226" y1="112" x2="226" y2="139" stroke="#B08010" strokeWidth="4.5" strokeLinecap="round"/>
+      <line x1="215" y1="112" x2="226" y2="112" stroke="#B08010" strokeWidth="4.5" strokeLinecap="round"/>
+      <circle cx="214" cy="112" r="6" fill="#C8A020"/>
+      <circle cx="214" cy="112" r="4" fill="#EACC44"/>
+
+      {/* Rope + bucket */}
+      <path d="M 170 146 C 168 157, 163 166, 159 185" stroke="#7A5C0C" strokeWidth="2.2" strokeLinecap="round" fill="none" opacity="0.88"/>
+      <rect x="143" y="184" width="32" height="26" rx="3" fill="url(#wbuck)"/>
+      <ellipse cx="159" cy="184" rx="16" ry="5" fill="#D4AF4A"/>
+      <ellipse cx="159" cy="210" rx="16" ry="5" fill="#9A7418"/>
+      <rect x="143" y="192" width="32" height="2.5" rx="1" fill="rgba(0,0,0,0.10)"/>
+      <rect x="143" y="200" width="32" height="2.5" rx="1" fill="rgba(0,0,0,0.10)"/>
+
+      {/* Ground */}
+      <ellipse cx="170" cy="302" rx="78" ry="8" fill="rgba(140,100,10,0.12)"/>
     </svg>
   );
 }
 
-// ── Wish type tag button ─────────────────────────────────
-function WishTag({ label, selected, onClick }) {
+function WishTag({ label, selected, onToggle }) {
   return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: "9px 20px",
-        borderRadius: 6,
-        border: `1.5px solid ${selected ? GOLD : BORDER}`,
-        background: selected ? GOLD_GLOW : BG_WHITE,
-        color: selected ? GOLD : TEXT2,
-        fontFamily: SANS, fontSize: 13.5, fontWeight: selected ? 600 : 400,
-        cursor: "pointer",
-        transition: "all 0.18s ease",
-      }}
-    >
-      {label}
-    </button>
+    <button onClick={onToggle} style={{
+      padding:"9px 16px", borderRadius:8,
+      border:`1.5px solid ${selected?"#C9A227":"rgba(175,155,130,0.36)"}`,
+      background:selected?"rgba(201,162,39,0.11)":"rgba(255,255,255,0.70)",
+      color:selected?"#7A5C00":"#5A5650",
+      fontFamily:SANS, fontSize:14, fontWeight:selected?500:400,
+      cursor:"pointer", transition:"all 0.14s ease",
+    }}>{label}</button>
   );
 }
 
-// ── Donation amount button ───────────────────────────────
-function AmountBtn({ amount, selected, onClick }) {
+function AmountPill({ val, selected, onClick }) {
   return (
-    <button
-      onClick={onClick}
-      style={{
-        flex: 1,
-        padding: "11px 8px",
-        borderRadius: 6,
-        border: `1.5px solid ${selected ? GOLD : BORDER}`,
-        background: selected ? GOLD_GLOW : BG_WHITE,
-        color: selected ? GOLD : TEXT2,
-        fontFamily: SANS, fontSize: 14, fontWeight: selected ? 700 : 500,
-        cursor: "pointer",
-        transition: "all 0.18s ease",
-      }}
-    >
-      ${amount}
-    </button>
+    <button onClick={onClick} style={{
+      flex:1, padding:"10px 6px", borderRadius:8,
+      border:`1.5px solid ${selected?"#C9A227":"rgba(175,155,130,0.36)"}`,
+      background:selected?"rgba(201,162,39,0.11)":"rgba(255,255,255,0.70)",
+      color:selected?"#7A5C00":"#5A5650",
+      fontFamily:SANS, fontSize:14.5, fontWeight:selected?600:400,
+      cursor:"pointer", transition:"all 0.14s ease",
+    }}>${val}</button>
   );
 }
 
-const WISH_TAGS   = ["Strength", "Healing", "Hope", "Gratitude", "Love", "Courage"];
-const AMOUNTS     = [5, 10, 25, 50];
-const WISH_COUNT  = 3421;
+const TAGS    = ["Strength","Healing","Hope","Gratitude","Love","Courage"];
+const AMOUNTS = [1, 2, 5, 10];
 
 export default function WishingWellPage() {
-  const [selectedTag, setSelectedTag] = useState(null);
-  const [wishText,    setWishText]    = useState("");
-  const [amount,      setAmount]      = useState(10);
-  const [cast,        setCast]        = useState(false);
+  const [tag,      setTag]      = useState(null);
+  const [msg,      setMsg]      = useState("");
+  const [amount,   setAmount]   = useState(2);
+  const [custom,   setCustom]   = useState("");
+  const [showCustom, setShowCustom] = useState(false);
+  const [cast,     setCast]     = useState(false);
+
+  const effectiveAmount = showCustom ? parseFloat(custom) || 0 : amount;
+  const canCast = effectiveAmount > 0;
+
+  function handleSelectPreset(a) {
+    setAmount(a);
+    setShowCustom(false);
+    setCustom("");
+  }
+
+  function handleSelectCustom() {
+    setShowCustom(true);
+    setAmount(null);
+  }
 
   function handleCast() {
-    if (!selectedTag && !wishText.trim()) return;
+    if (!canCast) return;
     setCast(true);
-    setTimeout(() => setCast(false), 3000);
+    setTimeout(() => setCast(false), 3200);
   }
 
   return (
-    <div style={{
-      minHeight: "calc(100vh - 65px)",
-      background: "linear-gradient(160deg, #F0EBF8 0%, #F7F3FB 40%, #FBF6F0 100%)",
-      padding: "0 0 60px",
-    }}>
+    <div className="wm-screen" style={{ background:PAGE_BG }}>
 
-      {/* ── Page header ── */}
-      <div style={{ textAlign:"center", padding:"44px 24px 20px" }}>
-        {/* Sparkle divider top */}
-        <div style={{ marginBottom:20 }}>
-          <svg width="120" height="28" viewBox="0 0 120 28" fill="none" style={{ opacity:0.7 }}>
-            <line x1="0" y1="14" x2="48" y2="14" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4"/>
-            <g transform="translate(60,14)">
-              <line x1="0" y1="-9" x2="0" y2="9"   stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
-              <line x1="-9" y1="0" x2="9" y2="0"   stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
-              <line x1="-5.5" y1="-5.5" x2="5.5" y2="5.5" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
-              <line x1="5.5"  y1="-5.5" x2="-5.5" y2="5.5" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
-            </g>
-            <line x1="72" y1="14" x2="120" y2="14" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4"/>
-          </svg>
+      {/* Header sparkle + title */}
+      <div className="wm-fadeup" style={{ textAlign:"center", padding:"22px 24px 0", flexShrink:0 }}>
+        {/* Three sparkle crosses */}
+        <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:8, marginBottom:6, position:"relative" }}>
+          <div style={{ position:"absolute", width:150, height:32, background:"radial-gradient(ellipse,rgba(220,185,60,0.30) 0%,transparent 70%)", pointerEvents:"none" }}/>
+          {[7,13,7].map((s,i)=>(
+            <svg key={i} width={s*2.5} height={s*2.5} viewBox={`0 0 ${s*2.5} ${s*2.5}`} fill="none" opacity={0.55+i*0.15}>
+              <g transform={`translate(${s*1.25},${s*1.25})`}>
+                <line x1="0" y1={-s} x2="0" y2={s} stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1={-s} y1="0" x2={s} y2="0" stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1={-s*.58} y1={-s*.58} x2={s*.58} y2={s*.58} stroke="#D4AF37" strokeWidth="1.1" strokeLinecap="round" opacity="0.52"/>
+                <line x1={s*.58} y1={-s*.58} x2={-s*.58} y2={s*.58} stroke="#D4AF37" strokeWidth="1.1" strokeLinecap="round" opacity="0.52"/>
+              </g>
+            </svg>
+          ))}
         </div>
-
-        <h1 className="wm-fadeup" style={{
-          fontFamily: SERIF,
-          fontSize: "clamp(28px, 4vw, 46px)",
-          fontWeight: 400, color: TEXT,
-          lineHeight: 1.15, marginBottom: 12,
-        }}>
-          <span style={{ color: GOLD }}>✦</span>
-          {" "}The WishMaker Wishing Well{" "}
-          <span style={{ color: GOLD }}>✦</span>
+        <h1 style={{ fontFamily:SERIF, fontWeight:400, fontSize:"clamp(22px,3.5vw,38px)", color:"#26200E", lineHeight:1.2, marginBottom:9 }}>
+          <span style={{ color:"#B8960C" }}>✦</span> The WishMaker Wishing Well <span style={{ color:"#B8960C" }}>✦</span>
         </h1>
-        <p className="wm-fadeup1" style={{ fontSize:16, color:TEXT2, lineHeight:1.7, fontFamily:SANS, marginBottom:4 }}>
+        <p style={{ fontFamily:SANS, fontSize:15, color:"#5A5650", lineHeight:1.6, marginBottom:2 }}>
           Send a wish into the well and help grant one for a child in need.
         </p>
-        <p className="wm-fadeup1" style={{ fontSize:15, color:TEXT2, fontFamily:SANS }}>
+        <p style={{ fontFamily:SANS, fontSize:14.5, color:"#5A5650", marginBottom:12 }}>
           100% donated to Make-A-Wish.
         </p>
-
-        {/* Gold divider */}
-        <div className="wm-fadeup2" style={{ display:"flex", alignItems:"center", gap:16, maxWidth:400, margin:"24px auto 0" }}>
-          <div style={{ flex:1, height:1, background:"rgba(184,150,12,0.25)" }}/>
-          <span style={{ color:GOLD, fontSize:13 }}>✦</span>
-          <div style={{ flex:1, height:1, background:"rgba(184,150,12,0.25)" }}/>
+        <div style={{ display:"flex", alignItems:"center", gap:12, maxWidth:260, margin:"0 auto" }}>
+          <div style={{ flex:1, height:"0.8px", background:"linear-gradient(90deg,transparent,rgba(184,150,12,0.38))" }}/>
+          <span style={{ color:GOLD, fontSize:11 }}>✦</span>
+          <div style={{ flex:1, height:"0.8px", background:"linear-gradient(90deg,rgba(184,150,12,0.38),transparent)" }}/>
         </div>
       </div>
 
-      {/* ── Main two-column area ── */}
+      {/* Main 2-col */}
       <div style={{
-        maxWidth: 860, margin: "0 auto",
-        padding: "10px 32px 0",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 48,
-        alignItems: "center",
+        flex:"1 1 0", minHeight:0,
+        display:"grid", gridTemplateColumns:"1fr 1fr",
+        alignItems:"center", maxWidth:780, width:"100%",
+        margin:"0 auto", padding:"6px 24px 0", gap:28,
       }}>
 
-        {/* Left: illustration */}
-        <div className="wm-fadeup1" style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
-          <WishingWellIllustration/>
+        {/* Well illustration */}
+        <div className="wm-fadeup1" style={{ display:"flex", justifyContent:"center" }}>
+          <WishingWell/>
         </div>
 
-        {/* Right: interaction panel */}
+        {/* Interaction panel */}
         <div className="wm-fadeup2" style={{
-          background: "rgba(255,255,255,0.72)",
-          border: `1px solid rgba(184,150,12,0.18)`,
-          borderRadius: 14,
-          padding: "28px 26px",
-          backdropFilter: "blur(8px)",
+          background:"rgba(255,255,255,0.58)",
+          border:"1px solid rgba(184,150,12,0.16)",
+          borderRadius:12, padding:"20px 18px",
+          backdropFilter:"blur(6px)",
         }}>
-
-          {/* Wish tags */}
-          <div style={{ display:"flex", flexWrap:"wrap", gap:10, marginBottom:20 }}>
-            {WISH_TAGS.map(tag => (
-              <WishTag
-                key={tag}
-                label={tag}
-                selected={selectedTag === tag}
-                onClick={() => setSelectedTag(prev => prev === tag ? null : tag)}
-              />
+          {/* Tags 3×2 */}
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8, marginBottom:14 }}>
+            {TAGS.map(t => (
+              <WishTag key={t} label={t} selected={tag===t} onToggle={()=>setTag(p=>p===t?null:t)}/>
             ))}
           </div>
-
-          {/* Optional text */}
-          <p style={{ fontSize:13, color:TEXT3, fontFamily:SANS, textAlign:"center", marginBottom:8 }}>
+          <p style={{ fontFamily:SANS, fontSize:13, color:"#9A9490", textAlign:"center", marginBottom:7 }}>
             Write your wish (optional)
           </p>
           <textarea
             className="wm-input"
-            value={wishText}
-            onChange={e => setWishText(e.target.value)}
-            maxLength={160}
+            value={msg}
+            onChange={e=>setMsg(e.target.value)}
+            maxLength={180}
             placeholder="May hope and strength find those who need it most."
             style={{
-              width: "100%",
-              height: 76,
-              padding: "11px 13px",
-              background: BG_WHITE,
-              border: `1.5px solid ${BORDER}`,
-              borderRadius: 6,
-              fontFamily: SERIF,
-              fontStyle: "italic",
-              fontSize: 13.5,
-              color: TEXT,
-              lineHeight: 1.65,
-              resize: "none",
-              boxSizing: "border-box",
-              marginBottom: 16,
-              display: "block",
-              transition: "border-color 0.2s, box-shadow 0.2s",
+              width:"100%", height:66,
+              padding:"9px 12px",
+              background:"rgba(255,255,255,0.88)",
+              border:"1.5px solid rgba(175,155,130,0.36)",
+              borderRadius:8, fontFamily:SERIF, fontStyle:"italic",
+              fontSize:13.5, color:"#3A3020", lineHeight:1.65,
+              resize:"none", boxSizing:"border-box", display:"block", marginBottom:13,
             }}
           />
-
-          {/* Amount buttons */}
-          <div style={{ display:"flex", gap:10, marginBottom:20 }}>
-            {AMOUNTS.map(a => (
-              <AmountBtn key={a} amount={a} selected={amount === a} onClick={() => setAmount(a)}/>
+          <div style={{ display:"flex", gap:6, marginBottom: showCustom ? 8 : 13, flexWrap:"wrap" }}>
+            {AMOUNTS.map(a=>(
+              <AmountPill key={a} val={a} selected={!showCustom && amount===a} onClick={()=>handleSelectPreset(a)}/>
             ))}
+            <button
+              onClick={handleSelectCustom}
+              style={{
+                flex:1, padding:"10px 6px", borderRadius:8,
+                border:`1.5px solid ${showCustom?"#C9A227":"rgba(175,155,130,0.36)"}`,
+                background:showCustom?"rgba(201,162,39,0.11)":"rgba(255,255,255,0.70)",
+                color:showCustom?"#7A5C00":"#5A5650",
+                fontFamily:SANS, fontSize:13.5, fontWeight:showCustom?600:400,
+                cursor:"pointer", transition:"all 0.14s ease", whiteSpace:"nowrap",
+              }}
+            >
+              Custom
+            </button>
           </div>
-
-          {/* Cast CTA */}
+          {showCustom && (
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:13 }}>
+              <span style={{ fontFamily:SANS, fontSize:15, color:"#7A5C00", fontWeight:600 }}>$</span>
+              <input
+                className="wm-input"
+                type="number"
+                min="1"
+                value={custom}
+                onChange={e=>setCustom(e.target.value)}
+                placeholder="Enter amount"
+                autoFocus
+                style={{
+                  flex:1, padding:"9px 12px",
+                  background:"rgba(255,255,255,0.88)",
+                  border:"1.5px solid rgba(201,162,39,0.45)",
+                  borderRadius:8, fontFamily:SANS,
+                  fontSize:14.5, color:"#3A3020",
+                  boxSizing:"border-box",
+                  transition:"border-color 0.2s, box-shadow 0.2s",
+                }}
+              />
+            </div>
+          )}
           <button
             onClick={handleCast}
-            disabled={!selectedTag && !wishText.trim()}
+            disabled={!canCast}
             style={{
-              width: "100%",
-              padding: "15px 20px",
-              background: (!selectedTag && !wishText.trim()) ? "rgba(184,150,12,0.35)" : GOLD_GRAD,
-              border: "none",
-              borderRadius: 8,
-              color: "#FFF8E8",
-              fontFamily: SANS,
-              fontSize: 15.5,
-              fontWeight: 600,
-              letterSpacing: "0.02em",
-              cursor: (!selectedTag && !wishText.trim()) ? "not-allowed" : "pointer",
-              boxShadow: "0 4px 20px rgba(184,150,12,0.32)",
-              transition: "all 0.2s ease",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
+              width:"100%", padding:"14px 16px",
+              background:canCast?"linear-gradient(135deg,#C9A227 0%,#9A7400 100%)":"rgba(184,150,12,0.28)",
+              border:"none", borderRadius:8,
+              color:canCast?"#FFF8E8":"rgba(255,248,232,0.50)",
+              fontFamily:SANS, fontSize:15.5, fontWeight:600,
+              cursor:canCast?"pointer":"not-allowed",
+              boxShadow:canCast?"0 4px 18px rgba(184,150,12,0.40)":"none",
+              transition:"all 0.2s ease",
+              display:"flex", alignItems:"center", justifyContent:"center", gap:8,
             }}
           >
-            {cast ? "✦ Your wish is in the well ✦" : "✦ Cast Wish Into the Well"}
+            {cast
+              ? "✦ Your wish is in the well ✦"
+              : <><span>✦</span> Cast Wish Into the Well {canCast && `· $${effectiveAmount}`}</>
+            }
           </button>
         </div>
       </div>
 
-      {/* ── Sparkle divider ── */}
-      <div style={{ textAlign:"center", margin:"44px auto 20px" }}>
-        <svg width="120" height="28" viewBox="0 0 120 28" fill="none" style={{ opacity:0.65 }}>
-          <line x1="0" y1="14" x2="48" y2="14" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4"/>
-          <g transform="translate(60,14)">
-            <line x1="0" y1="-9" x2="0" y2="9"   stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
-            <line x1="-9" y1="0" x2="9" y2="0"   stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
-            <line x1="-5.5" y1="-5.5" x2="5.5" y2="5.5" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
-            <line x1="5.5"  y1="-5.5" x2="-5.5" y2="5.5" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
-          </g>
-          <line x1="72" y1="14" x2="120" y2="14" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4"/>
-        </svg>
-      </div>
-
-      {/* ── Wish counter ── */}
-      <div style={{ textAlign:"center" }}>
-        <p style={{ fontFamily:SERIF, fontSize:16, color:TEXT2 }}>
-          <span style={{ color:GOLD, marginRight:8 }}>✦</span>
+      {/* Footer sparkle + counter */}
+      <div style={{ flexShrink:0, textAlign:"center", padding:"10px 24px 14px" }}>
+        <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:8, marginBottom:8, position:"relative" }}>
+          <div style={{ position:"absolute", width:120, height:28, background:"radial-gradient(ellipse,rgba(220,185,60,0.24) 0%,transparent 70%)", pointerEvents:"none" }}/>
+          {[6,11,6].map((s,i)=>(
+            <svg key={i} width={s*2.5} height={s*2.5} viewBox={`0 0 ${s*2.5} ${s*2.5}`} fill="none" opacity={0.45+i*0.12}>
+              <g transform={`translate(${s*1.25},${s*1.25})`}>
+                <line x1="0" y1={-s} x2="0" y2={s} stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1={-s} y1="0" x2={s} y2="0" stroke="#D4AF37" strokeWidth="1.8" strokeLinecap="round"/>
+              </g>
+            </svg>
+          ))}
+        </div>
+        <p style={{ fontFamily:SERIF, fontSize:15, color:"#5A5650" }}>
+          <span style={{ color:"#B8960C", marginRight:5, fontSize:12 }}>✦</span>
           Wishes Cast Into the Well:{" "}
-          <strong style={{ color:TEXT }}>{(WISH_COUNT + (cast ? 1 : 0)).toLocaleString()} wishes today</strong>
+          <strong style={{ color:"#26200E", fontWeight:500 }}>
+            {(3421+(cast?1:0)).toLocaleString()} wishes today
+          </strong>
         </p>
       </div>
 

@@ -1,244 +1,101 @@
-// ─────────────────────────────────────────────────────────
-// ImpactPage.jsx
-// Make-A-Wish donation story: 50% stat, why it matters,
-// three-point ripple effect, final CTA.
-// ─────────────────────────────────────────────────────────
+// ImpactPage — matches mockup Image 2 exactly
+// Single scrollable column: title → subtitle → image placeholder →
+// 50% stat text → Why It Matters → A Lasting Ripple + checklist + closing italic
 
-import GoldButton from "../components/GoldButton";
-import Divider from "../components/Divider";
 import { GOLD, BG, TEXT, TEXT2, TEXT3, SERIF, SANS } from "../utils/tokens";
 
 export default function ImpactPage({ go }) {
-  const heroImage = new URL("/images/1.jpg", import.meta.url).href;
-
   return (
-    <div style={{ background: BG }}>
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "64px 24px" }}>
+    <div className="wm-screen" style={{ background:BG, overflowY:"auto" }}>
+      <div style={{ maxWidth:640, margin:"0 auto", padding:"36px 28px 36px" }}>
+
         {/* Header */}
-        <div
-          className="wm-fadeup"
-          style={{ textAlign: "center", marginBottom: 32 }}
-        >
-          <p
-            style={{
-              fontSize: 12,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: GOLD,
-              fontWeight: 500,
-              marginBottom: 11,
-              fontFamily: SANS,
-            }}
-          >
-            ✦ WishMaker.io
-          </p>
-          <h1
-            style={{
-              fontFamily: SERIF,
-              fontSize: "clamp(36px,5vw,52px)",
-              fontWeight: 300,
-              marginBottom: 13,
-            }}
-          >
+        <div className="wm-fadeup" style={{ textAlign:"center", marginBottom:22 }}>
+          <h1 style={{ fontFamily:SERIF, fontWeight:300, fontSize:"clamp(32px,5vw,50px)", color:TEXT, marginBottom:9 }}>
             Our Impact
           </h1>
-          <h2
-            style={{
-              fontFamily: SERIF,
-              fontStyle: "italic",
-              color: GOLD,
-              fontSize: 23,
-              fontWeight: 400,
-              marginBottom: 18,
-            }}
-          >
+          <h2 style={{ fontFamily:SERIF, fontStyle:"italic", color:GOLD, fontSize:22, fontWeight:400, marginBottom:13 }}>
             A Wish That Gives Back
           </h2>
-          <p
-            style={{
-              fontSize: 15,
-              color: TEXT2,
-              lineHeight: 1.8,
-              fontFamily: SANS,
-            }}
-          >
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT2, lineHeight:1.75, marginBottom:3 }}>
             Every message written on WishMaker becomes more than a memory.
           </p>
-          <p style={{ fontSize: 15, color: TEXT2, fontFamily: SANS }}>
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT2 }}>
             It becomes a moment of hope.
           </p>
         </div>
 
-        {/* Hero image */}
-        <div
-          className="wm-fadeup1"
-          style={{
-            width: "100%",
-            borderRadius: 14,
-            marginBottom: 36,
-            height: 240,
-            background: `url(${heroImage}) center/cover no-repeat`,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            boxShadow: "0 10px 36px rgba(0,0,0,0.07)",
-          }}
-        ></div>
+        {/* Hero image — warm fade placeholder styled like mockup */}
+        <div className="wm-fadeup1" style={{
+          width:"100%", borderRadius:8, marginBottom:28,
+          height:220, overflow:"hidden", position:"relative",
+          background:"linear-gradient(135deg,#FFF4EC 0%,#FDEBD0 50%,#F7E4D0 100%)",
+          display:"flex", alignItems:"center", justifyContent:"center",
+        }}>
+          {/* Fade overlay to match mockup's soft vignette */}
+          <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at center, rgba(255,255,255,0) 40%, rgba(249,245,242,0.80) 100%)", pointerEvents:"none" }}/>
+          {/* Mickey silhouette area — text label */}
+          <div style={{ textAlign:"center", zIndex:1 }}>
+            <div style={{ fontSize:52, marginBottom:4 }}>🌟</div>
+            <p style={{ fontFamily:SANS, fontSize:12, color:TEXT3 }}>Make-A-Wish Foundation</p>
+          </div>
+        </div>
 
         {/* 50% stat */}
-        <div
-          className="wm-fadeup2"
-          style={{ textAlign: "center", marginBottom: 40 }}
-        >
-          <p style={{ fontSize: 16, lineHeight: 1.92, fontFamily: SANS }}>
-            <span
-              style={{
-                fontFamily: SERIF,
-                fontSize: "clamp(20px,3vw,26px)",
-                fontWeight: 600,
-                color: GOLD,
-              }}
-            >
-              50% of every{" "}
-            </span>
-            WishMaker purchase is donated to the{" "}
-            <strong>Make-A-Wish Foundation</strong>, helping grant life-changing
-            wishes for children facing critical illnesses.
+        <div className="wm-fadeup2" style={{ marginBottom:28, textAlign:"center" }}>
+          <p style={{ fontFamily:SANS, fontSize:16, lineHeight:1.85, color:TEXT }}>
+            <span style={{ fontFamily:SERIF, fontSize:22, fontWeight:600, color:GOLD }}>50% of every </span>
+            WishMaker purchase is donated to the <strong>Make-A-Wish Foundation</strong>,
+            helping grant life-changing wishes for children facing critical illnesses.
           </p>
-          <p
-            style={{
-              marginTop: 18,
-              fontSize: 15,
-              color: TEXT2,
-              lineHeight: 1.8,
-              fontFamily: SANS,
-            }}
-          >
-            When you create a wish for someone you love, you are also helping
-            grant a wish for a child who needs hope the most.
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT2, lineHeight:1.85, marginTop:16 }}>
+            When you create a wish for someone you love, you are also helping grant a wish for a child who needs hope the most.
           </p>
         </div>
 
-        <Divider />
+        {/* Divider */}
+        <div style={{ display:"flex", alignItems:"center", gap:14, maxWidth:320, margin:"0 auto 24px" }}>
+          <div style={{ flex:1, height:"0.8px", background:`rgba(184,150,12,0.22)` }}/>
+          <span style={{ color:GOLD, fontSize:12 }}>✦</span>
+          <div style={{ flex:1, height:"0.8px", background:`rgba(184,150,12,0.22)` }}/>
+        </div>
 
-        {/* Why it matters */}
-        <div className="wm-fadeup" style={{ marginBottom: 40 }}>
-          <h2
-            style={{
-              fontFamily: SERIF,
-              fontSize: "clamp(22px,3vw,34px)",
-              fontWeight: 400,
-              marginBottom: 16,
-            }}
-          >
-            Why It Matters
-          </h2>
-          <p
-            style={{
-              fontSize: 15,
-              color: TEXT2,
-              lineHeight: 1.86,
-              marginBottom: 11,
-              fontFamily: SANS,
-            }}
-          >
-            For children battling serious illness, a wish can mean more than a
-            dream fulfilled.
+        {/* Why It Matters */}
+        <div style={{ marginBottom:28 }}>
+          <h2 style={{ fontFamily:SERIF, fontWeight:400, fontSize:28, color:TEXT, marginBottom:13 }}>Why It Matters</h2>
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT2, lineHeight:1.82, marginBottom:10 }}>
+            For children battling serious illness, a wish can mean more than a dream fulfilled.
           </p>
-          <p style={{ fontSize: 15, lineHeight: 1.86, fontFamily: SANS }}>
-            It can restore joy, <strong>inspire strength</strong>, and bring
-            families moments of light during the darkest times.
+          <p style={{ fontFamily:SANS, fontSize:15, lineHeight:1.82, color:TEXT }}>
+            It can restore joy, <strong>inspire strength</strong>, and bring families moments of light during the darkest times.
           </p>
         </div>
 
-        <Divider />
-
-        {/* Lasting ripple */}
-        <div
-          className="wm-fadeup"
-          style={{ marginBottom: 52, textAlign: "center" }}
-        >
-          <h2
-            style={{
-              fontFamily: SERIF,
-              fontSize: "clamp(22px,3vw,34px)",
-              fontWeight: 400,
-              marginBottom: 20,
-            }}
-          >
-            A Lasting Ripple
-          </h2>
-          <p style={{ fontSize: 15, marginBottom: 24, fontFamily: SANS }}>
-            A <strong>single</strong> WishMaker card creates{" "}
-            <strong>three</strong> lasting impacts:
+        {/* A Lasting Ripple */}
+        <div style={{ marginBottom:28 }}>
+          <h2 style={{ fontFamily:SERIF, fontWeight:400, fontSize:28, color:TEXT, marginBottom:13 }}>A Lasting Ripple</h2>
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT, marginBottom:14 }}>
+            A <strong>single</strong> WishMaker card creates <strong>three</strong> lasting impacts:
           </p>
-          <div
-            style={{ maxWidth: 400, margin: "0 auto 28px", textAlign: "left" }}
-          >
-            {[
-              "A message preserved forever on the blockchain",
-              "A keepsake card shared with someone you love",
-              "A real wish granted for a child in need",
-            ].map((item) => (
-              <div
-                key={item}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 10,
-                  fontSize: 15,
-                  color: TEXT2,
-                  lineHeight: 1.68,
-                  marginBottom: 13,
-                  fontFamily: SANS,
-                }}
-              >
-                <span
-                  style={{
-                    color: GOLD,
-                    fontWeight: 700,
-                    marginTop: 2,
-                    flexShrink: 0,
-                  }}
-                >
-                  ✓
-                </span>
-                {item}
-              </div>
-            ))}
-          </div>
-          <p
-            style={{
-              fontWeight: 500,
-              marginBottom: 40,
-              fontSize: 15,
-              fontFamily: SANS,
-            }}
-          >
-            One message. Three lives touched.
-          </p>
-          <p
-            style={{
-              fontFamily: SERIF,
-              fontStyle: "italic",
-              fontSize: 19,
-              color: TEXT,
-              marginBottom: 42,
-              lineHeight: 1.6,
-            }}
-          >
-            ✦{" "}
-            <em>
-              Make a wish that lasts forever — and help grant one that truly
-              matters.
-            </em>
-          </p>
-          <GoldButton large onClick={() => go("make")}>
-            Make a Wish
-          </GoldButton>
+          {[
+            "A message preserved forever on the blockchain",
+            "A keepsake card shared with someone you love",
+            "A real wish granted for a child in need",
+          ].map(item => (
+            <div key={item} style={{ display:"flex", alignItems:"flex-start", gap:10, fontSize:15, color:TEXT2, lineHeight:1.68, marginBottom:10, fontFamily:SANS }}>
+              <span style={{ color:GOLD, fontWeight:700, marginTop:2, flexShrink:0 }}>✓</span>{item}
+            </div>
+          ))}
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT, marginTop:10 }}>One message. Three lives touched.</p>
         </div>
+
+        {/* Closing italic */}
+        <div style={{ textAlign:"center", paddingTop:8 }}>
+          <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize:18, color:TEXT, lineHeight:1.65 }}>
+            ✦ <em>Make a wish that lasts forever — and help grant one that truly matters.</em>
+          </p>
+        </div>
+
       </div>
     </div>
   );

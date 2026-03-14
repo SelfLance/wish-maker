@@ -1,103 +1,121 @@
-// ─────────────────────────────────────────────────────────
-// HomePage.jsx
-// Above-the-fold landing page — hero + feature strip +
-// tagline all fit within one viewport height, no scroll.
-//
-// Layout strategy:
-//   • Outer wrapper: height calc(100vh - 65px), flex column
-//   • Hero:          flex 1 — grows to fill remaining space
-//   • Feature strip: flexShrink 0, compact 16px padding
-//   • Tagline:       flexShrink 0, slim 12px padding
-//
-// On ≤860px the .wm-atf class (GlobalStyles) restores
-// height:auto so small screens can still scroll freely.
-// ─────────────────────────────────────────────────────────
+// HomePage — matches mockup Image 5 exactly
+// Left: headline + italic tagline + CTA | Right: open greeting card
+// Bottom strip: Write Your Card · Send Your Wish · Lasts Forever
+// Footer: italic tagline
 
-import WishCard   from "../components/WishCard";
-import GoldButton from "../components/GoldButton";
-import { GOLD, GOLD_GLOW, GOLD_PALE, BG, BG_WHITE, TEXT, TEXT2, BORDER, SERIF, SANS } from "../utils/tokens";
+import WishCard from "../components/WishCard";
+import { GOLD, GOLD_GLOW, GOLD_PALE, BG, BG_WHITE, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
 
 export default function HomePage({ go }) {
   return (
-    <div
-      className="wm-atf"
-      style={{
-        background: BG,
-        height: "calc(100vh - 65px)",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
-    >
+    <div className="wm-screen" style={{ background: BG }}>
 
-      {/* ── Hero — fills all remaining space ── */}
-      <div
-        className="wm-hero"
-        style={{
-          flex: "1 1 0", minHeight: 0,
-          maxWidth: 1100, width: "100%", margin: "0 auto",
-          padding: "0 48px",
-          display: "grid", gridTemplateColumns: "1fr 1fr",
-          gap: 48, alignItems: "center",
-        }}
-      >
-        {/* Left: copy */}
-        <div>
-          <div className="wm-fadeup" style={{ display:"flex", alignItems:"center", gap:8, fontSize:11, letterSpacing:"0.11em", textTransform:"uppercase", color:GOLD, fontWeight:500, marginBottom:8, fontFamily:SANS }}>
-            ✦ Written into time, forever
-          </div>
-          <h1 className="wm-fadeup1 wm-hero-h1" style={{ fontFamily:SERIF, fontSize:"clamp(36px,4.6vw,64px)", fontWeight:300, lineHeight:1.08, letterSpacing:"-0.02em", marginBottom:10, color:TEXT }}>
+      {/* ── Hero: 2-col, fills all space ── */}
+      <div style={{
+        flex:"1 1 0", minHeight:0,
+        display:"grid", gridTemplateColumns:"1fr 1fr",
+        alignItems:"center",
+        maxWidth:1060, width:"100%", margin:"0 auto", padding:"0 56px",
+        gap:0,
+      }}>
+
+        {/* Left copy */}
+        <div style={{ paddingRight:32 }}>
+          <h1 className="wm-fadeup" style={{
+            fontFamily:SERIF, fontWeight:300, lineHeight:1.10,
+            fontSize:"clamp(38px,4.8vw,66px)",
+            letterSpacing:"-0.02em", color:TEXT, marginBottom:14,
+          }}>
             Make a wish<br/>that lasts<br/>forever.
           </h1>
-          <p className="wm-fadeup2" style={{ fontFamily:SERIF, fontStyle:"italic", color:GOLD, fontSize:17, marginBottom:10 }}>
+          <p className="wm-fadeup1" style={{ fontFamily:SANS, fontSize:15, color:TEXT2, lineHeight:1.72, maxWidth:390, marginBottom:10 }}>
+            Create a timeless digital card whose message<br/>is written permanently into time.
+          </p>
+          <p className="wm-fadeup2" style={{ fontFamily:SERIF, fontStyle:"italic", color:GOLD, fontSize:16, marginBottom:26 }}>
             For every wish you make, you help grant one.
           </p>
-          <p className="wm-fadeup2" style={{ fontSize:14, color:TEXT2, lineHeight:1.7, maxWidth:400, marginBottom:22, fontFamily:SANS }}>
-            Create a timeless digital card whose message is written permanently into time.
-          </p>
           <div className="wm-fadeup3">
-            <GoldButton large onClick={() => go("make")}>Make a Wish</GoldButton>
+            <button
+              className="wm-gold-btn"
+              onClick={() => go("make")}
+              style={{
+                background:"linear-gradient(135deg,#C9A227 0%,#9A7400 100%)",
+                border:"none", borderRadius:6,
+                color:"#FFF8E8", fontFamily:SANS, fontWeight:500,
+                fontSize:16, padding:"14px 34px", cursor:"pointer",
+                boxShadow:"0 4px 18px rgba(184,150,12,0.32)",
+              }}
+            >
+              Make a Wish
+            </button>
           </div>
         </div>
 
-        {/* Right: card visual */}
-        <div className="wm-hero-vis wm-fadeup1" style={{ display:"flex", justifyContent:"center", alignItems:"center", position:"relative" }}>
-          <div style={{ position:"absolute", width:280, height:280, background:`radial-gradient(circle,${GOLD_GLOW},transparent 72%)`, borderRadius:"50%", pointerEvents:"none" }}/>
-          <WishCard floating size="md"/>
+        {/* Right: floating open card */}
+        <div className="wm-fadeup1" style={{ display:"flex", justifyContent:"center", alignItems:"center", position:"relative" }}>
+          <div style={{ position:"absolute", width:320, height:320, background:`radial-gradient(circle,${GOLD_GLOW},transparent 70%)`, borderRadius:"50%", pointerEvents:"none" }}/>
+          <WishCard floating size="lg"/>
         </div>
       </div>
 
-      {/* ── Feature strip — compact, fixed height ── */}
-      <div style={{ flexShrink:0, borderTop:`1px solid ${BORDER}`, background:BG_WHITE, padding:"16px 48px" }}>
-        <div
-          className="wm-feats"
-          style={{ maxWidth:1100, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:32 }}
-        >
+      {/* ── Feature strip ── */}
+      <div style={{
+        flexShrink:0, borderTop:`1px solid ${BORDER}`,
+        background:BG_WHITE, padding:"18px 56px",
+      }}>
+        <div style={{ maxWidth:760, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
           {[
-            { icon:"✦", title:"Write Your Card", desc:"Create your message." },
-            { icon:"♡", title:"Send Your Wish",  desc:"Share it with someone special." },
-            { icon:"∞", title:"Lasts Forever",   desc:"Your wish is written into time." },
+            { icon: <CardIcon/>,     title:"Write Your Card",  desc:"Create your message." },
+            { icon: <HeartIcon/>,    title:"Send Your Wish",   desc:"Share it with someone special." },
+            { icon: <InfinityIcon/>, title:"Lasts Forever",    desc:"Your wish is written into time." },
           ].map(({ icon, title, desc }) => (
-            <div key={title} style={{ display:"flex", alignItems:"center", gap:12 }}>
-              <div style={{ width:38, height:38, borderRadius:"50%", flexShrink:0, background:GOLD_GLOW, border:`1.5px solid ${GOLD_PALE}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, color:GOLD }}>
-                {icon}
-              </div>
+            <div key={title} style={{ display:"flex", alignItems:"center", gap:16 }}>
+              <div style={{ width:52, height:52, flexShrink:0 }}>{icon}</div>
               <div>
-                <p style={{ fontWeight:600, fontSize:13, color:TEXT, fontFamily:SANS, lineHeight:1.2 }}>{title}</p>
-                <p style={{ fontSize:12, color:TEXT2, fontFamily:SANS, lineHeight:1.4 }}>{desc}</p>
+                <p style={{ fontFamily:SANS, fontSize:14, fontWeight:500, color:TEXT, marginBottom:2 }}>{title}</p>
+                <p style={{ fontFamily:SANS, fontSize:12.5, color:TEXT3 }}>{desc}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Tagline — slim footer strip ── */}
-      <div style={{ flexShrink:0, textAlign:"center", padding:"12px 24px", borderTop:`1px solid ${BORDER}` }}>
-        <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize:"clamp(13px,1.4vw,17px)", color:TEXT2, margin:0 }}>
+      {/* ── Tagline footer ── */}
+      <div style={{ flexShrink:0, textAlign:"center", padding:"13px 24px", borderTop:`1px solid ${BORDER}` }}>
+        <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize:16, color:TEXT2 }}>
           For every wish you make, you help grant one.
         </p>
       </div>
 
     </div>
+  );
+}
+
+// ── Small feature icons ──────────────────────────────────
+function CardIcon() {
+  return (
+    <svg viewBox="0 0 52 52" fill="none" width="52" height="52">
+      <rect x="6" y="11" width="40" height="30" rx="3" fill="#F5EDD8" stroke="#D4AF37" strokeWidth="1.2"/>
+      <line x1="26" y1="11" x2="26" y2="41" stroke="#D4AF37" strokeWidth="1" strokeDasharray="2 2" opacity="0.5"/>
+      <circle cx="19" cy="26" r="3" fill="none" stroke="#D4AF37" strokeWidth="1.2"/>
+      <line x1="34" y1="22" x2="38" y2="22" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round"/>
+      <line x1="34" y1="26" x2="38" y2="26" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round"/>
+      <line x1="34" y1="30" x2="38" y2="30" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round"/>
+    </svg>
+  );
+}
+function HeartIcon() {
+  return (
+    <svg viewBox="0 0 52 52" fill="none" width="52" height="52">
+      <path d="M26 38 C26 38 10 28 10 18 C10 13.5 13.5 10 18 10 C21 10 24 11.5 26 14 C28 11.5 31 10 34 10 C38.5 10 42 13.5 42 18 C42 28 26 38 26 38Z" fill="#F5D5C0" stroke="#D4AF37" strokeWidth="0" opacity="0.9"/>
+    </svg>
+  );
+}
+function InfinityIcon() {
+  return (
+    <svg viewBox="0 0 52 52" fill="none" width="52" height="52">
+      <path d="M 12 26 C 12 20, 18 16, 24 20 L 28 26 C 34 32, 40 32, 40 26 C 40 20, 34 16, 28 20 L 24 26 C 18 32, 12 32, 12 26 Z"
+        fill="none" stroke="#C8A84B" strokeWidth="2.5" strokeLinecap="round"/>
+    </svg>
   );
 }
