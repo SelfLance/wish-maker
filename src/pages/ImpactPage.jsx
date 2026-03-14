@@ -2,7 +2,7 @@
 // Single scrollable column: title → subtitle → image placeholder →
 // 50% stat text → Why It Matters → A Lasting Ripple + checklist + closing italic
 
-import { GOLD, BG, TEXT, TEXT2, TEXT3, SERIF, SANS } from "../utils/tokens";
+import { GOLD, BG, TEXT, TEXT2, SERIF, SANS } from "../utils/tokens";
 
 export default function ImpactPage({ go }) {
   return (
@@ -32,13 +32,10 @@ export default function ImpactPage({ go }) {
           background:"linear-gradient(135deg,#FFF4EC 0%,#FDEBD0 50%,#F7E4D0 100%)",
           display:"flex", alignItems:"center", justifyContent:"center",
         }}>
+          {/* Hero image */}
+          <img src="/images/1.jpg" alt="Make-A-Wish Foundation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
           {/* Fade overlay to match mockup's soft vignette */}
           <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at center, rgba(255,255,255,0) 40%, rgba(249,245,242,0.80) 100%)", pointerEvents:"none" }}/>
-          {/* Mickey silhouette area — text label */}
-          <div style={{ textAlign:"center", zIndex:1 }}>
-            <div style={{ fontSize:52, marginBottom:4 }}>🌟</div>
-            <p style={{ fontFamily:SANS, fontSize:12, color:TEXT3 }}>Make-A-Wish Foundation</p>
-          </div>
         </div>
 
         {/* 50% stat */}
