@@ -54,14 +54,15 @@ export default function Navbar({ page, go }) {
                   <span style={{ color:BORDER, fontSize:15, margin:"0 14px", userSelect:"none", lineHeight:1 }}>|</span>
                 )}
                 <span
-                  className={`wm-nav-link${page===p ? " active" : ""}`}
+                  className={`wm-nav-link${page===p ? " active" : ""}${p !== "home" ? " wm-nav-gold" : ""}`}
                   onClick={() => go(p)}
                   style={{
-                    fontFamily:SANS, fontSize:13.5, fontWeight:600,
-                    color: page===p ? "#C9A227" : TEXT,
-                    opacity: page===p ? 1 : 0.72,
+                    fontFamily:SANS, fontSize:13.5,
+                    fontWeight: p !== "home" ? 700 : 600,
+                    color: p !== "home" ? "#C9A227" : (page===p ? "#C9A227" : TEXT),
+                    opacity: (p !== "home" || page===p) ? 1 : 0.72,
                     cursor:"pointer", whiteSpace:"nowrap",
-                    paddingBottom:2, transition:"opacity 0.2s",
+                    paddingBottom:2, transition:"color 0.2s, opacity 0.2s",
                   }}
                 >
                   {label}
@@ -109,14 +110,14 @@ export default function Navbar({ page, go }) {
                   <span style={{ color:BORDER, fontSize:15, margin:"0 16px", userSelect:"none", lineHeight:1 }}>|</span>
                 )}
                 <span
-                  className={`wm-nav-link${page===p ? " active" : ""}`}
+                  className={`wm-nav-link${page===p ? " active" : ""} wm-nav-gold`}
                   onClick={() => go(p)}
                   style={{
-                    fontFamily:SANS, fontSize:14, fontWeight:400,
-                    color: page===p ? "#C9A227" : TEXT2,
-                    opacity: page===p ? 1 : 0.85,
+                    fontFamily:SANS, fontSize:14, fontWeight:700,
+                    color:"#C9A227",
+                    opacity:1,
                     cursor:"pointer", whiteSpace:"nowrap",
-                    paddingBottom:2, transition:"opacity 0.2s",
+                    paddingBottom:2, transition:"color 0.2s",
                   }}
                 >
                   {label}

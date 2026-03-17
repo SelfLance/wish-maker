@@ -48,6 +48,9 @@ export default function HomePage({ go }) {
             >
               Make a Wish
             </button>
+            <p style={{ fontFamily:SANS, fontSize:13.5, color:TEXT2, marginTop:10 }}>
+              Create a wish that lasts forever — in under 30 seconds.
+            </p>
           </div>
         </div>
 

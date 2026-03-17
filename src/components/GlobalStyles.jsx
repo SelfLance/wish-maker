@@ -22,6 +22,9 @@ const css = `
   .wm-nav-link:hover::after, .wm-nav-link.active::after { width:100%; }
   .wm-nav-link:hover { opacity:0.75 !important; }
 
+  .wm-nav-gold { color:#C9A227 !important; font-weight:700 !important; }
+  .wm-nav-gold:hover { color:#9A7400 !important; opacity:1 !important; }
+
   .wm-input:focus { border-color:${GOLD} !important; box-shadow:0 0 0 3px ${GOLD_GLOW} !important; outline:none !important; }
 
   .wm-gold-btn { transition:all 0.2s ease; }

@@ -14,9 +14,9 @@
 import StarArt from "./StarArt";
 import { GOLD, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
 
-const DIMS  = { lg: [238, 308], md: [198, 258], sm: [152, 198] };
-const PADS  = { lg: "28px 20px 16px", md: "22px 17px 14px", sm: "16px 13px 11px" };
-const STARS = { lg: 110, md: 88, sm: 66 };
+const DIMS  = { lg: [286, 370], md: [198, 258], sm: [152, 198] };
+const PADS  = { lg: "34px 24px 19px", md: "22px 17px 14px", sm: "16px 13px 11px" };
+const STARS = { lg: 132, md: 88, sm: 66 };
 
 export default function WishCard({
   msg          = "",
