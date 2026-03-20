@@ -33,7 +33,7 @@ export default function ImpactPage({ go }) {
           display:"flex", alignItems:"center", justifyContent:"center",
         }}>
           {/* Hero image */}
-          <img src="/images/1.jpg" alt="Make-A-Wish Foundation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+          <img src="images/1.jpg" alt="Make-A-Wish Foundation" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
           {/* Fade overlay to match mockup's soft vignette */}
           <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse at center, rgba(255,255,255,0) 40%, rgba(249,245,242,0.80) 100%)", pointerEvents:"none" }}/>
         </div>
