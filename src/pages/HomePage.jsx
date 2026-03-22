@@ -4,7 +4,7 @@
 // Footer: italic tagline
 
 import WishCard from "../components/WishCard";
-import { GOLD, GOLD_GLOW, GOLD_PALE, BG, BG_WHITE, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
+import { GOLD_GLOW, BG, BG_WHITE, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
 
 export default function HomePage({ go }) {
   return (
@@ -15,26 +15,23 @@ export default function HomePage({ go }) {
         flex:"1 1 0", minHeight:0,
         display:"grid", gridTemplateColumns:"1fr 1fr",
         alignItems:"center",
-        maxWidth:1060, width:"100%", margin:"0 auto", padding:"0 56px",
+        width:"100%", padding:"0",
         gap:0,
       }}>
 
         {/* Left copy */}
-        <div style={{ paddingRight:32 }}>
+        <div style={{ paddingLeft:48, paddingRight:0 }}>
           <h1 className="wm-fadeup" style={{
-            fontFamily:SERIF, fontWeight:300, lineHeight:1.10,
-            fontSize:"clamp(38px,4.8vw,66px)",
-            letterSpacing:"-0.02em", color:TEXT, marginBottom:14,
+            fontFamily:SERIF, fontWeight:300, lineHeight:1.08,
+            fontSize:"clamp(46px,5.8vw,80px)",
+            letterSpacing:"-0.02em", color:TEXT, marginBottom:20,
           }}>
             Make a wish<br/>that lasts<br/>forever.
           </h1>
-          <p className="wm-fadeup1" style={{ fontFamily:SANS, fontSize:15, color:TEXT2, lineHeight:1.72, maxWidth:390, marginBottom:10 }}>
-            Create a timeless digital card whose message<br/>is written permanently into time.
+          <p className="wm-fadeup1" style={{ fontFamily:SANS, fontSize:17, color:TEXT2, lineHeight:1.75, maxWidth:440, marginBottom:32 }}>
+            Create a timeless digital card whose message is written permanently into time, delivered digitally and as a beautifully printed card.
           </p>
-          <p className="wm-fadeup2" style={{ fontFamily:SERIF, fontStyle:"italic", color:GOLD, fontSize:16, marginBottom:26 }}>
-            For every wish you make, you help grant one.
-          </p>
-          <div className="wm-fadeup3">
+          <div className="wm-fadeup2">
             <button
               className="wm-gold-btn"
               onClick={() => go("make")}
@@ -42,22 +39,19 @@ export default function HomePage({ go }) {
                 background:"linear-gradient(135deg,#C9A227 0%,#9A7400 100%)",
                 border:"none", borderRadius:6,
                 color:"#FFF8E8", fontFamily:SANS, fontWeight:500,
-                fontSize:16, padding:"14px 34px", cursor:"pointer",
+                fontSize:18, padding:"16px 42px", cursor:"pointer",
                 boxShadow:"0 4px 18px rgba(184,150,12,0.32)",
               }}
             >
               Make a Wish
             </button>
-            <p style={{ fontFamily:SANS, fontSize:13.5, color:TEXT2, marginTop:10 }}>
-              Create a wish that lasts forever — in under 30 seconds.
-            </p>
           </div>
         </div>
 
         {/* Right: floating open card */}
-        <div className="wm-fadeup1" style={{ display:"flex", justifyContent:"center", alignItems:"center", position:"relative" }}>
-          <div style={{ position:"absolute", width:320, height:320, background:`radial-gradient(circle,${GOLD_GLOW},transparent 70%)`, borderRadius:"50%", pointerEvents:"none" }}/>
-          <WishCard floating size="lg"/>
+        <div className="wm-fadeup1" style={{ display:"flex", justifyContent:"flex-start", alignItems:"center", position:"relative", paddingLeft:32 }}>
+          <div style={{ position:"absolute", width:440, height:440, background:`radial-gradient(circle,${GOLD_GLOW},transparent 70%)`, borderRadius:"50%", pointerEvents:"none" }}/>
+          <WishCard floating size="xl"/>
         </div>
       </div>
 
@@ -84,9 +78,9 @@ export default function HomePage({ go }) {
       </div>
 
       {/* ── Tagline footer ── */}
-      <div style={{ flexShrink:0, textAlign:"center", padding:"13px 24px", borderTop:`1px solid ${BORDER}` }}>
-        <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize:16, color:TEXT2 }}>
-          For every wish you make, you help grant one.
+      <div style={{ flexShrink:0, textAlign:"center", padding:"16px 24px", borderTop:`1px solid ${BORDER}` }}>
+        <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize:18, color:"#C9A227" }}>
+          For every wish you make, you help grant one to a child in need.
         </p>
       </div>
 

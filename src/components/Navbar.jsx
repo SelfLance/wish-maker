@@ -2,7 +2,7 @@
 // 1. WishingWell: logo left + all 4 links right (active in gold)
 // 2. All other pages: logo centered + "How it works | Impact" right (TEXT color)
 
-import { GOLD, GOLD_PALE, TEXT, TEXT2, BORDER, SERIF, SANS, FLOW_STEP } from "../utils/tokens";
+import { GOLD, GOLD_PALE, TEXT, BORDER, SERIF, SANS, FLOW_STEP } from "../utils/tokens";
 
 const WELL_LINKS = [
   ["home",         "Home"],
@@ -12,6 +12,7 @@ const WELL_LINKS = [
 ];
 
 const MAIN_LINKS = [
+  ["home",         "Home"],
   ["how",          "How it works"],
   ["impact",       "Impact"],
   ["wishing-well", "Wishing Well"],
@@ -58,9 +59,9 @@ export default function Navbar({ page, go }) {
                   onClick={() => go(p)}
                   style={{
                     fontFamily:SANS, fontSize:13.5,
-                    fontWeight: p !== "home" ? 700 : 600,
-                    color: p !== "home" ? "#C9A227" : (page===p ? "#C9A227" : TEXT),
-                    opacity: (p !== "home" || page===p) ? 1 : 0.72,
+                    fontWeight: 700,
+                    color: "#C9A227",
+                    opacity: 1,
                     cursor:"pointer", whiteSpace:"nowrap",
                     paddingBottom:2, transition:"color 0.2s, opacity 0.2s",
                   }}

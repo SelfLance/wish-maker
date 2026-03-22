@@ -144,12 +144,12 @@ function AmountPill({ val, selected, onClick }) {
 }
 
 const TAGS    = ["Strength","Healing","Hope","Gratitude","Love","Courage"];
-const AMOUNTS = [1, 2, 5, 10];
+const AMOUNTS = [5, 10, 25, 50];
 
 export default function WishingWellPage() {
   const [tag,      setTag]      = useState(null);
   const [msg,      setMsg]      = useState("");
-  const [amount,   setAmount]   = useState(2);
+  const [amount,   setAmount]   = useState(5);
   const [custom,   setCustom]   = useState("");
   const [showCustom, setShowCustom] = useState(false);
   const [cast,     setCast]     = useState(false);
@@ -196,10 +196,10 @@ export default function WishingWellPage() {
         <h1 style={{ fontFamily:SERIF, fontWeight:400, fontSize:"clamp(22px,3.5vw,38px)", color:"#26200E", lineHeight:1.2, marginBottom:9 }}>
           <span style={{ color:"#B8960C" }}>✦</span> The WishMaker Wishing Well <span style={{ color:"#B8960C" }}>✦</span>
         </h1>
-        <p style={{ fontFamily:SANS, fontSize:15, color:"#5A5650", lineHeight:1.6, marginBottom:2 }}>
+        <p style={{ fontFamily:SANS, fontSize:15.5, color:"#B8960C", lineHeight:1.6, marginBottom:2, fontWeight:700 }}>
           Send a wish into the well and help grant one for a child in need.
         </p>
-        <p style={{ fontFamily:SANS, fontSize:14.5, color:"#5A5650", marginBottom:12 }}>
+        <p style={{ fontFamily:SANS, fontSize:15, color:"#B8960C", marginBottom:12, fontWeight:700 }}>
           100% donated to Make-A-Wish.
         </p>
         <div style={{ display:"flex", alignItems:"center", gap:12, maxWidth:260, margin:"0 auto" }}>

@@ -14,9 +14,9 @@
 import StarArt from "./StarArt";
 import { GOLD, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
 
-const DIMS  = { lg: [286, 370], md: [198, 258], sm: [152, 198] };
-const PADS  = { lg: "34px 24px 19px", md: "22px 17px 14px", sm: "16px 13px 11px" };
-const STARS = { lg: 132, md: 88, sm: 66 };
+const DIMS  = { xl: [360, 466], lg: [286, 370], md: [198, 258], sm: [152, 198] };
+const PADS  = { xl: "42px 30px 24px", lg: "34px 24px 19px", md: "22px 17px 14px", sm: "16px 13px 11px" };
+const STARS = { xl: 166, lg: 132, md: 88, sm: 66 };
 
 export default function WishCard({
   msg          = "",
@@ -29,7 +29,7 @@ export default function WishCard({
   const starSz  = STARS[size] || 88;
   const isEmpty = !msg && !orderSummary;
   // Responsive className lets media queries shrink card on mobile
-  const resCls  = size === "lg" ? "wm-card-lg-w" : size === "md" ? "wm-card-md-w" : "";
+  const resCls  = size === "xl" ? "wm-card-lg-w" : size === "lg" ? "wm-card-lg-w" : size === "md" ? "wm-card-md-w" : "";
 
   const coverSt = {
     width: W, height: H, flexShrink: 0,
