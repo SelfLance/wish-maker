@@ -39,10 +39,41 @@ const css = `
 
   /* single-page: each page exactly fills the viewport below the nav */
   .wm-screen {
-    height: calc(100vh - 65px);
+    height: calc(100vh - 70px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+  }
+
+  /* ── Mobile responsive ── */
+  @media (max-width: 768px) {
+    html, body { overflow: auto !important; height: auto !important; }
+
+    .wm-screen {
+      height: auto !important;
+      min-height: calc(100vh - 56px);
+      overflow-y: visible !important;
+      overflow-x: hidden !important;
+    }
+
+    /* Responsive card sizes */
+    .wm-card-lg-w  { width: 160px !important; height: 206px !important; }
+    .wm-card-md-w  { width: 140px !important; height: 180px !important; }
+
+    /* Nav hamburger */
+    .wm-mob-menu {
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(16px);
+      display: flex; flex-direction: column;
+      padding: 32px 28px; gap: 4px;
+      z-index: 298; border-top: 1px solid #ede8de;
+    }
+    .wm-mob-menu-link {
+      font-size: 20px; padding: 14px 0;
+      border-bottom: 1px solid #f0ece4;
+      cursor: pointer; text-align: left;
+    }
   }
 `;
 

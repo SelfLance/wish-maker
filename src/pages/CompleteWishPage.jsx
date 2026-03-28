@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import WishCard from "../components/WishCard";
+import useIsMobile from "../hooks/useIsMobile";
 import { GOLD, BG, BG_WHITE, TEXT, TEXT2, TEXT3, BORDER, SERIF, SANS } from "../utils/tokens";
 
 function Field({ label, sublabel, placeholder, type="text", value, onChange }) {
@@ -27,45 +28,52 @@ function Field({ label, sublabel, placeholder, type="text", value, onChange }) {
 export default function CompleteWishPage({ go, wish }) {
   const [email, setEmail] = useState("");
   const [addr,  setAddr]  = useState("");
+  const isMobile = useIsMobile();
 
   return (
     <div className="wm-screen" style={{ background:BG }}>
 
       {/* Header */}
-      <div className="wm-fadeup" style={{ textAlign:"center", padding:"24px 24px 0", flexShrink:0 }}>
-        <h1 style={{ fontFamily:SERIF, fontWeight:300, fontSize:"clamp(28px,4vw,44px)", color:TEXT, marginBottom:8 }}>
+      <div className="wm-fadeup" style={{ textAlign:"center", padding: isMobile ? "20px 20px 12px" : "24px 24px 0", flexShrink:0 }}>
+        <h1 style={{ fontFamily:SERIF, fontWeight:300, fontSize: isMobile ? "clamp(24px,8vw,36px)" : "clamp(28px,4vw,44px)", color:TEXT, marginBottom:6 }}>
           Complete Your Wish
         </h1>
-        <p style={{ fontFamily:SANS, fontSize:14.5, color:TEXT2 }}>
+        <p style={{ fontFamily:SANS, fontSize: isMobile ? 13 : 14.5, color:TEXT2, maxWidth:480, margin:"0 auto" }}>
           Review your wish and complete your order. Your message will be preserved forever.
         </p>
       </div>
 
-      {/* Main 2-col */}
+      {/* Main */}
       <div style={{
-        flex:"1 1 0", minHeight:0,
-        display:"flex", alignItems:"center", justifyContent:"center",
-        gap:44, padding:"14px 56px",
+        flex: isMobile ? "none" : "1 1 0",
+        minHeight: 0,
+        display: "flex",
+        flexDirection: isMobile ? "column" : "row",
+        alignItems: isMobile ? "stretch" : "center",
+        justifyContent: isMobile ? "flex-start" : "center",
+        gap: isMobile ? 0 : 44,
+        padding: isMobile ? "16px 20px 0" : "14px 56px",
+        overflowY: isMobile ? "visible" : undefined,
       }}>
 
         {/* Card visual */}
-        <div className="wm-fadeup1" style={{ flexShrink:0 }}>
-          <WishCard msg={wish.msg} from={wish.from} size="lg"/>
+        <div className="wm-fadeup1" style={{ flexShrink:0, display:"flex", justifyContent:"center", marginBottom: isMobile ? 20 : 0 }}>
+          <WishCard msg={wish.msg} from={wish.from} size={isMobile ? "md" : "lg"}/>
         </div>
 
         {/* Form panel */}
         <div className="wm-fadeup2" style={{
           background:BG_WHITE, border:`1.5px solid ${BORDER}`,
-          borderRadius:10, padding:"24px 26px", width:360, flexShrink:0,
+          borderRadius:10, padding: isMobile ? "20px 18px" : "24px 26px",
+          width: isMobile ? "100%" : 360, flexShrink:0,
         }}>
-          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT, marginBottom:16 }}>
+          <p style={{ fontFamily:SANS, fontSize:15, color:TEXT, marginBottom:14 }}>
             <strong style={{ fontWeight:500 }}>From:</strong>{"  "}{wish.from || "—"}
           </p>
 
           <Field label="Send To (Digital Delivery)" sublabel="Recipient Email:" placeholder="" type="email" value={email} onChange={e=>setEmail(e.target.value)}/>
           <Field label="Send To (Physical Card)" placeholder="" value={addr} onChange={e=>setAddr(e.target.value)}/>
 
-          {/* Product line */}
           <div style={{ display:"flex", justifyContent:"space-between", padding:"14px 0 8px", borderTop:`1px solid ${BORDER}`, marginTop:4 }}>
             <p style={{ fontFamily:SANS, fontSize:14.5, fontWeight:500, color:TEXT }}>WishMaker Forever Card</p>
             <p style={{ fontFamily:SANS, fontSize:15, fontWeight:600, color:GOLD }}>$10</p>
@@ -96,13 +104,13 @@ export default function CompleteWishPage({ go, wish }) {
       </div>
 
       {/* Footer tagline */}
-      <div style={{ flexShrink:0, textAlign:"center", padding:"0 24px 14px" }}>
+      <div style={{ flexShrink:0, textAlign:"center", padding: isMobile ? "16px 20px 20px" : "0 24px 14px" }}>
         <div style={{ display:"flex", alignItems:"center", gap:14, maxWidth:320, margin:"0 auto 10px" }}>
-          <div style={{ flex:1, height:"0.8px", background:`rgba(184,150,12,0.22)` }}/>
+          <div style={{ flex:1, height:"0.8px", background:"rgba(184,150,12,0.22)" }}/>
           <span style={{ color:GOLD, fontSize:12 }}>✦</span>
-          <div style={{ flex:1, height:"0.8px", background:`rgba(184,150,12,0.22)` }}/>
+          <div style={{ flex:1, height:"0.8px", background:"rgba(184,150,12,0.22)" }}/>
         </div>
-        <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize:15.5, color:TEXT2 }}>
+        <p style={{ fontFamily:SERIF, fontStyle:"italic", fontSize: isMobile ? 14 : 15.5, color:TEXT2 }}>
           Every wish you make helps grant one for a child in need.
         </p>
       </div>

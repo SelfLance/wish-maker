@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GlobalStyles     from "./components/GlobalStyles";
 import Navbar           from "./components/Navbar";
 import HomePage         from "./pages/HomePage";
@@ -11,12 +11,27 @@ import ImpactPage       from "./pages/ImpactPage";
 import WishingWellPage  from "./pages/WishingWellPage";
 import { BG, TEXT, SANS } from "./utils/tokens";
 
+const PAGES = ["home","make","complete","checkout","confirmation","how","impact","wishing-well"];
+
+function getPageFromHash() {
+  const hash = window.location.hash.replace(/^#\/?/, "");
+  return PAGES.includes(hash) ? hash : "home";
+}
+
 export default function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(getPageFromHash);
   const [wish, setWish] = useState({ msg:"", from:"" });
+
+  // Sync state when user navigates with browser back/forward
+  useEffect(() => {
+    const handler = () => setPage(getPageFromHash());
+    window.addEventListener("hashchange", handler);
+    return () => window.removeEventListener("hashchange", handler);
+  }, []);
 
   function go(p) {
     setPage(p);
+    window.location.hash = p;
     try { window.scrollTo({ top:0, behavior:"smooth" }); } catch(_) {}
   }
 
